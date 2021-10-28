@@ -1,5 +1,4 @@
 import cv2
-import os
 import paramiko
 import pymysql
 import numpy as np
@@ -9,13 +8,9 @@ dbPort = 3306
 dbId = "admin"
 dbPwd = "kongys11"
 
-#db 파라미터
-con_ip = '14.55.141.117:1521/xepdb1'
-con_id = 'SONG4'
-con_pwd = '1234'
 
 def sftp():
-    sftpURL = '14.55.141.117'
+    sftpURL = '3.38.106.83'
     sftpUser = 'song4'
     sftpPass = '1234'
 
@@ -25,13 +20,14 @@ def sftp():
     ftp = ssh.open_sftp()
 
     ymlFilepath = 'face_trainner.yml'
-    ymlLocalpath = 'C:/workspace/sftp/face_trainner.yml'
+    ymlLocalpath = '/home/jetson/Desktop/workspace/sftp/face_trainner.yml'
     npyFilepath = 'floorList.npy'
-    npyLocalpath = 'C:/workspace/sftp/floorList.npy'
+    npyLocalpath = '/home/jetson/Desktop/workspace/sftp/floorList.npy'
     ftp.get(ymlFilepath, ymlLocalpath)
     ftp.get(npyFilepath, npyLocalpath)
 
     print("Upgrade complite")
+
 
 def triggerOff():
     con = pymysql.connect(host=dbUrl, port=dbPort, user=dbId, password=dbPwd, db="elevator")
@@ -42,6 +38,7 @@ def triggerOff():
     cursor.close()
     con.commit()
     con.close()
+
 
 def triggerCHK():
     con = pymysql.connect(host=dbUrl, port=dbPort, user=dbId, password=dbPwd, db="elevator")
@@ -57,20 +54,21 @@ def triggerCHK():
 
     return chk
 
+
 def faceRecog():
     count = 0
-    face_cascade = cv2.CascadeClassifier('C:/Users/song4/PycharmProjects/face_1/venv/Lib/site-packages/cv2/data/haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier(
+        'home/jetson/Desktop/workspace/cascade/haarcascade_frontalface_default.xml')
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read("C:/workspace/sftp/face_trainner.yml")  # 저장된 값 가져오기
+    recognizer.read("home/jetson/Desktop/workspace/sftp/face_trainner.yml")  # 저장된 값 가져오기
 
-    name_space_path = "C:/workspace/my_target_img/Face_Image"
     labels = getFloorList()
     cap = cv2.VideoCapture(0)  # 카메라 실행
 
     if cap.isOpened() == False:  # 카메라 생성 확인
         exit()
 
-    while(triggerCHK()=='0'):
+    while (triggerCHK() == '0'):
         ret, img = cap.read()
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=5)  # 얼굴 인식
@@ -95,9 +93,11 @@ def faceRecog():
     cap.release()
     cv2.destroyAllWindows()
 
+
 def getFloorList():
-    floorList_ = np.load('C:/workspace/sftp/floorList.npy')
+    floorList_ = np.load('home/jetson/Desktop/workspace/sftp/floorList.npy')
     return floorList_
+
 
 def putFloor(floor_):
     con = pymysql.connect(host=dbUrl, port=dbPort, user=dbId, password=dbPwd, db="elevator")
@@ -110,9 +110,9 @@ def putFloor(floor_):
     con.close()
 
 
-while(True):
+while (True):
     print("---------------------------------")
-    if triggerCHK()=='1':
+    if triggerCHK() == '1':
         print("start update")
         sftp()
         triggerOff()

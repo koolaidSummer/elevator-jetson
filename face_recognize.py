@@ -58,9 +58,9 @@ def triggerCHK():
 def faceRecog():
     count = 0
     face_cascade = cv2.CascadeClassifier(
-        'home/jetson/Desktop/workspace/cascade/haarcascade_frontalface_default.xml')
+        '/home/jetson/Desktop/workspace/cascade/haarcascade_frontalface_default.xml')
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read("home/jetson/Desktop/workspace/sftp/face_trainner.yml")  # 저장된 값 가져오기
+    recognizer.read("/home/jetson/Desktop/workspace/sftp/face_trainner.yml")  # 저장된 값 가져오기
 
     labels = getFloorList()
     cap = cv2.VideoCapture(0)  # 카메라 실행
@@ -95,7 +95,7 @@ def faceRecog():
 
 
 def getFloorList():
-    floorList_ = np.load('home/jetson/Desktop/workspace/sftp/floorList.npy')
+    floorList_ = np.load('/home/jetson/Desktop/workspace/sftp/floorList.npy')
     return floorList_
 
 

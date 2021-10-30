@@ -3,16 +3,16 @@ import paramiko
 import pymysql
 import numpy as np
 
-dbUrl = "elevator-db.cdpfvc1hzmbi.ap-northeast-2.rds.amazonaws.com"
+dbUrl = "url"
 dbPort = 3306
-dbId = "admin"
-dbPwd = "kongys11"
+dbId = "Id"
+dbPwd = "Pwd"
 
 
 def sftp():
-    sftpURL = '3.38.106.83'
-    sftpUser = 'song4'
-    sftpPass = '1234'
+    sftpURL = 'url'
+    sftpUser = 'user'
+    sftpPass = 'pwd'
 
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -58,9 +58,9 @@ def triggerCHK():
 def faceRecog():
     count = 0
     face_cascade = cv2.CascadeClassifier(
-        '/home/jetson/Desktop/workspace/cascade/haarcascade_frontalface_default.xml')
+        '/home/jetson/Desktop/workspace/cascade/haarcascade_frontalface_default.xml') #haar cascade filter 가져오기
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read("/home/jetson/Desktop/workspace/sftp/face_trainner.yml")  # 저장된 값 가져오기
+    recognizer.read("/home/jetson/Desktop/workspace/sftp/face_trainner.yml")  # 학습된 파일 가져오기
 
     labels = getFloorList()
     cap = cv2.VideoCapture(0)  # 카메라 실행

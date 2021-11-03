@@ -102,7 +102,7 @@ def getFloorList():
 def putFloor(floor_):
     con = pymysql.connect(host=dbUrl, port=dbPort, user=dbId, password=dbPwd, db="elevator")
     cursor = con.cursor()
-    sql = "INSERT INTO FLOOR (FLOOR_INFO) VALUES (%s)"
+    sql = "INSERT INTO FLOOR CTL_FLOOR_JETSON (CTL_FLOOR_JETSON) VALUES (%s)"
     cursor.execute(sql, floor_)
 
     cursor.close()

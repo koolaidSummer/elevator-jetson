@@ -109,6 +109,15 @@ def putFloor(floor_):
     con.commit()
     con.close()
 
+    con = pymysql.connect(host=dbUrl, port=dbPort, user=dbId, password=dbPwd, db="elevator")
+    cursor = con.cursor()
+    sql = "INSERT INTO FLOOR CTL_FLOOR_WEB (CTL_FLOOR_WEB) VALUES (1)"
+    cursor.execute(sql)
+
+    cursor.close()
+    con.commit()
+    con.close()
+
 
 while (True):
     print("---------------------------------")
